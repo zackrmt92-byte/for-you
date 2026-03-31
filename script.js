@@ -49,18 +49,18 @@ function initParticles() {
 function updateBirthdayLogic() {
     const now = new Date();
     
-    // We target April 4th of the CURRENT year
     const currentYear = now.getFullYear();
-    const birthday = new Date(currentYear, 3, 4, 0, 0, 0); // Month 3 is April
+    // MONTH is 3 (April), DAY is now 8
+    const birthday = new Date(currentYear, 3, 8, 0, 0, 0); 
     
-    // If her birthday already passed this year, look at next year 
-    // (This prevents the 00:00:00 bug)
-    if (now > birthday && (now.getDate() !== 4 || now.getMonth() !== 3)) {
+    // If it's already past April 8th this year, look at next year
+    if (now > birthday && (now.getDate() !== 8 || now.getMonth() !== 3)) {
         birthday.setFullYear(currentYear + 1);
     }
 
     const diff = birthday - now;
-    const isBirthday = (now.getMonth() === 3 && now.getDate() === 4);
+    // Check if TODAY is April 8th
+    const isBirthday = (now.getMonth() === 3 && now.getDate() === 8);
 
     if (isBirthday) {
         document.body.classList.add('birthday-mode');
@@ -70,6 +70,7 @@ function updateBirthdayLogic() {
         document.getElementById('message-display').innerHTML = `<div><h1 class="birthday-title">Happy Birthday!</h1><p>To the most amazing woman. Today is all about you.</p></div>`;
         document.querySelector('.action-btn').innerText = "A Birthday Wish";
         
+        // Custom Birthday Quotes
         availableQuotes = [
             "May your year be as brilliant as you are.",
             "You deserve every bit of happiness today.",
@@ -78,7 +79,6 @@ function updateBirthdayLogic() {
             "Cheers to another year of being completely irreplaceable."
         ];
     } else {
-        // Calculate remaining time
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
