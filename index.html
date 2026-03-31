@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A Moment of Peace</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <title>A Moment for You</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500;1,600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,7 +17,14 @@
 
     <div class="glass-container">
         <div id="message-display">Take a deep breath. This space is just for you.</div>
-        <button class="action-btn" onclick="generateMessage()">Click on me Arrow! i Have Something To Tell You</button>
+        
+        <button class="action-btn" onclick="generateMessage()">A Gentle Reminder</button>
+        
+        <div id="birthday-countdown">
+            <span id="timer-label">Counting down to your day:</span>
+            <div id="timer-digits">00d 00h 00m 00s</div>
+        </div>
+
         <p class="subtext">You are more than enough Arrow ❤️❤️❤️</p>
         <a href="javascript:void(0)" class="mute-link" onclick="toggleMute()">Mute Music</a>
     </div>

@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent; /* Removes the blue flash on mobile taps */
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -14,6 +14,7 @@ body {
     color: #f0ebd8;
     overflow: hidden;
     background-color: #0d1117;
+    transition: background-color 2s ease;
 }
 
 .bg-gradient {
@@ -24,9 +25,10 @@ body {
     height: 100%;
     z-index: -2;
     background: radial-gradient(circle at center, #1a1f2e 0%, #0d1117 100%);
-    transition: background 1.5s ease;
+    transition: background 2s ease;
 }
 
+/* Particles */
 .particle {
     position: absolute;
     background: rgba(240, 235, 216, 0.15);
@@ -41,10 +43,11 @@ body {
     100% { transform: translateY(-10vh) scale(1); opacity: 0; }
 }
 
+/* The Card */
 .glass-container {
     background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     border: 1px solid rgba(240, 235, 216, 0.1);
     padding: 40px 30px;
     text-align: center;
@@ -85,41 +88,56 @@ body {
     cursor: pointer;
     transition: all 0.4s ease;
     outline: none;
-    width: 100%; /* Makes it easier to tap on phone */
+    width: 100%;
     max-width: 280px;
 }
 
-/* --- MOBILE FIXES --- */
-@media (max-width: 600px) {
-    #message-display {
-        font-size: 1.25rem; /* Smaller font so it fits phone screens */
-        min-height: 150px;
-    }
-    
-    .glass-container {
-        padding: 30px 20px;
-        width: 90%;
-    }
-
-    .action-btn {
-        padding: 12px 20px;
-        letter-spacing: 3px;
-    }
+.action-btn:hover {
+    background: #f0ebd8;
+    color: #0d1117;
+    transform: scale(1.05);
 }
 
-.subtext {
-    margin-top: 30px;
+/* Countdown Styles */
+#birthday-countdown {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(240, 235, 216, 0.1);
+}
+
+#timer-label {
+    display: block;
     font-size: 0.6rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: rgba(240, 235, 216, 0.3);
+    color: rgba(240, 235, 216, 0.4);
+    margin-bottom: 5px;
 }
 
-.mute-link {
-    display: block;
-    margin-top: 20px;
-    font-size: 0.55rem;
-    color: rgba(240, 235, 216, 0.2);
-    text-decoration: none;
-    letter-spacing: 2px;
+#timer-digits {
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 1px;
 }
+
+/* BIRTHDAY MODE OVERRIDES */
+body.birthday-mode { background-color: #1a0f11; }
+body.birthday-mode .bg-gradient { background: radial-gradient(circle at center, #3d2b2e 0%, #1a0f11 100%); }
+body.birthday-mode .particle { background: rgba(255, 215, 0, 0.5); box-shadow: 0 0 8px rgba(255, 215, 0, 0.3); }
+body.birthday-mode .glass-container { border: 1px solid rgba(255, 215, 0, 0.2); }
+
+.birthday-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #f3e5ab;
+    margin-bottom: 10px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+    #message-display { font-size: 1.2rem; min-height: 150px; }
+    .glass-container { width: 90%; padding: 30px 20px; }
+}
+
+.subtext { margin-top: 30px; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: rgba(240, 235, 216, 0.3); }
+.mute-link { display: block; margin-top: 15px; font-size: 0.55rem; color: rgba(240, 235, 216, 0.2); text-decoration: none; }

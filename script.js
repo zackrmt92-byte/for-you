@@ -29,62 +29,87 @@ const allQuotes = [
 let availableQuotes = [...allQuotes];
 let musicStarted = false;
 
+// 1. Initialize Floating Particles
 function initParticles() {
     const container = document.getElementById('particle-container');
-    const particleCount = window.innerWidth < 600 ? 10 : 20; // Fewer particles on phone for better performance
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
+    const count = window.innerWidth < 600 ? 12 : 25;
+    for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
         const size = Math.random() * 4 + 2 + 'px';
-        particle.style.width = size;
-        particle.style.height = size;
-        particle.style.left = Math.random() * 100 + 'vw';
-        particle.style.top = Math.random() * 100 + 'vh';
-        particle.style.animationDelay = Math.random() * 15 + 's';
-        container.appendChild(particle);
+        p.style.width = size; p.style.height = size;
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.top = Math.random() * 100 + 'vh';
+        p.style.animationDelay = Math.random() * 15 + 's';
+        container.appendChild(p);
     }
 }
 
+// 2. Birthday Countdown & Mode Switch
+function updateBirthdayLogic() {
+    const now = new Date();
+    const birthday = new Date(2026, 3, 4); // April 4th, 2026
+    const diff = birthday - now;
+
+    const isBirthday = (now.getMonth() === 3 && now.getDate() === 4);
+
+    if (isBirthday) {
+        document.body.classList.add('birthday-mode');
+        document.getElementById('birthday-countdown').style.display = "none";
+        document.getElementById('message-display').innerHTML = `<div><h1 class="birthday-title">Happy Birthday!</h1><p>To the most amazing woman. Today is all about you.</p></div>`;
+        document.querySelector('.action-btn').innerText = "A Birthday Wish";
+        
+        availableQuotes = [
+            "May your year be as brilliant as you are.",
+            "You deserve every bit of happiness today.",
+            "The world got brighter the day you were born.",
+            "You are a rare and beautiful soul. Happy Birthday.",
+            "Cheers to another year of being completely irreplaceable."
+        ];
+    } else {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+        document.getElementById('timer-digits').innerText = `${days}d ${hours}h ${mins}m ${secs}s`;
+    }
+}
+
+// 3. Main Message Action
 function generateMessage() {
     const display = document.getElementById('message-display');
     const music = document.getElementById('piano-music');
     const bg = document.querySelector('.bg-gradient');
 
     if (!musicStarted) {
-        music.play().catch(() => console.log("Audio waiting for interaction"));
+        music.play().catch(() => {});
         music.volume = 0.3;
         musicStarted = true;
     }
 
-    // Visual Pulse for Phone
     bg.style.background = "radial-gradient(circle at center, #2a344a 0%, #0d1117 100%)";
-    setTimeout(() => {
-        bg.style.background = "radial-gradient(circle at center, #1a1f2e 0%, #0d1117 100%)";
-    }, 800);
+    setTimeout(() => { bg.style.background = "radial-gradient(circle at center, #1a1f2e 0%, #0d1117 100%)"; }, 800);
 
     display.style.opacity = 0;
-    display.style.transform = "translateY(10px) scale(0.98)";
+    display.style.transform = "translateY(10px)";
 
     setTimeout(() => {
-        if (availableQuotes.length === 0) {
-            availableQuotes = [...allQuotes];
-        }
-
-        const randomIndex = Math.floor(Math.random() * availableQuotes.length);
-        const selectedQuote = availableQuotes[randomIndex];
-        availableQuotes.splice(randomIndex, 1);
-
-        display.innerText = selectedQuote;
+        if (availableQuotes.length === 0) availableQuotes = [...allQuotes];
+        const idx = Math.floor(Math.random() * availableQuotes.length);
+        display.innerText = availableQuotes[idx];
+        availableQuotes.splice(idx, 1);
         display.style.opacity = 1;
-        display.style.transform = "translateY(0px) scale(1)";
+        display.style.transform = "translateY(0px)";
     }, 600);
 }
 
 function toggleMute() {
-    const music = document.getElementById('piano-music');
-    const link = document.querySelector('.mute-link');
-    music.muted = !music.muted;
-    link.innerText = music.muted ? "Unmute Music" : "Mute Music";
+    const m = document.getElementById('piano-music');
+    m.muted = !m.muted;
+    document.querySelector('.mute-link').innerText = m.muted ? "Unmute Music" : "Mute Music";
 }
 
+// Start everything
 initParticles();
+setInterval(updateBirthdayLogic, 1000);
+updateBirthdayLogic();
