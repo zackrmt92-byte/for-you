@@ -48,14 +48,25 @@ function initParticles() {
 // 2. Birthday Countdown & Mode Switch
 function updateBirthdayLogic() {
     const now = new Date();
-    const birthday = new Date(2026, 3, 4); // April 4th, 2026
-    const diff = birthday - now;
+    
+    // We target April 4th of the CURRENT year
+    const currentYear = now.getFullYear();
+    const birthday = new Date(currentYear, 3, 4, 0, 0, 0); // Month 3 is April
+    
+    // If her birthday already passed this year, look at next year 
+    // (This prevents the 00:00:00 bug)
+    if (now > birthday && (now.getDate() !== 4 || now.getMonth() !== 3)) {
+        birthday.setFullYear(currentYear + 1);
+    }
 
+    const diff = birthday - now;
     const isBirthday = (now.getMonth() === 3 && now.getDate() === 4);
 
     if (isBirthday) {
         document.body.classList.add('birthday-mode');
-        document.getElementById('birthday-countdown').style.display = "none";
+        const countdownEl = document.getElementById('birthday-countdown');
+        if (countdownEl) countdownEl.style.display = "none";
+        
         document.getElementById('message-display').innerHTML = `<div><h1 class="birthday-title">Happy Birthday!</h1><p>To the most amazing woman. Today is all about you.</p></div>`;
         document.querySelector('.action-btn').innerText = "A Birthday Wish";
         
@@ -67,11 +78,16 @@ function updateBirthdayLogic() {
             "Cheers to another year of being completely irreplaceable."
         ];
     } else {
+        // Calculate remaining time
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const secs = Math.floor((diff % (1000 * 60)) / 1000);
-        document.getElementById('timer-digits').innerText = `${days}d ${hours}h ${mins}m ${secs}s`;
+        
+        const timerDigits = document.getElementById('timer-digits');
+        if (timerDigits) {
+            timerDigits.innerText = `${days}d ${hours}h ${mins}m ${secs}s`;
+        }
     }
 }
 
